@@ -242,6 +242,42 @@ void test_notInList(void)
   free(data);
 }
 
+/* NEW TESTS BEGIN */
+
+void test_indexOf4(void)
+{
+  populate_list();
+  //List should be 4->3->2->1->0
+  void *data = alloc_data(0);
+  size_t idx = list_indexof(lst_, data);
+  TEST_ASSERT_TRUE(idx == 4);
+  free(data);
+}
+
+void test_addNull(void)
+{
+  TEST_ASSERT_TRUE(list_add(lst_, NULL) == NULL);
+  TEST_ASSERT_TRUE(lst_->size == 0);
+}
+
+void test_removeIndexNull(void)
+{
+  populate_list();
+  TEST_ASSERT_TRUE(list_remove_index(NULL, 3) == NULL);
+  TEST_ASSERT_TRUE(lst_->size == 5);
+}
+
+void test_indexOfNull(void)
+{
+  populate_list();
+  TEST_ASSERT_TRUE(list_indexof(lst_, NULL) == -1);
+  void *data = alloc_data(0);
+  TEST_ASSERT_TRUE(list_indexof(NULL, data) == -1);
+  TEST_ASSERT_TRUE(list_indexof(NULL, NULL) == -1);
+  TEST_ASSERT_TRUE(lst_->size == 5);
+  free(data);
+}
+
 int main(void) {
   UNITY_BEGIN();
   RUN_TEST(test_create_destroy);
@@ -255,5 +291,10 @@ int main(void) {
   RUN_TEST(test_indexOf0);
   RUN_TEST(test_indexOf3);
   RUN_TEST(test_notInList);
+  printf("-----------------------\n");
+  RUN_TEST(test_indexOf4);
+  RUN_TEST(test_addNull);
+  RUN_TEST(test_removeIndexNull);
+  RUN_TEST(test_indexOfNull);
   return UNITY_END();
 }
