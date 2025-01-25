@@ -7,11 +7,6 @@
  * Description: Implements functions defined in lab.h.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-
 #include "lab.h"
 
 list_t *list_init(void (*destroy_data)(void *), int (*compare_to)(const void *, const void *)) {
