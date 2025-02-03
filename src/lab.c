@@ -2,7 +2,7 @@
  * File: lab.c
  * Author: MTumir
  * Created: 01.22.2025
- * Latest: 01.25.2025
+ * Latest: 02.02.2025
  * 
  * Description: Implements functions defined in lab.h.
  */
@@ -12,14 +12,18 @@
 list_t *list_init(void (*destroy_data)(void *), int (*compare_to)(const void *, const void *)) {
 
     /* Returns if parameters are not met */
-    if (destroy_data == NULL || compare_to == NULL) {
+    if (!destroy_data || !compare_to) {     // CR: destroy_data == NULL changed to !destroy_data, compare_to == NULL changed to !compare_to
         return NULL;
     }
 
     /* Create new list + sentinel node */
     list_t *new_list = (list_t *)malloc(sizeof(list_t));
+    if (!new_list) {        // CR: new_list == NULL changed to !new_list
+        return NULL;        // CR: now returns early if new_list is NULL
+    }
     node_t *sentinel = (node_t *)malloc(sizeof(node_t));
-    if (new_list == NULL || sentinel == NULL) {
+    if (!sentinel) {        // CR: sentinel == NULL changed to !sentinel
+        free(new_list);     // CR: now frees new_list if sentinel is NULL
         return NULL;
     }
 
@@ -41,7 +45,7 @@ list_t *list_init(void (*destroy_data)(void *), int (*compare_to)(const void *, 
 void list_destroy(list_t **list) {
 
     /* Returns if parameters are not met */
-    if (list == NULL) {
+    if (!list || !*list) {        // CR: list == NULL changed to !list, added NULL check for *list
         return;
     }
 
@@ -65,14 +69,14 @@ void list_destroy(list_t **list) {
 list_t *list_add(list_t *list, void *data) {
 
     /* Returns if parameters are not met */
-    if (list == NULL || data == NULL) {
-        return NULL;
+    if (!list || !data) {       // CR: list == NULL changed to !list, data == NULL changed to !data
+        return list;            // CR: now returns list rather than NULL
     }
 
     /* Create new node */
     node_t *new_node = (node_t *)malloc(sizeof(node_t));
-    if (new_node == NULL) {
-        return NULL;
+    if (!new_node) {            // CR: new_node == NULL changed to !new_node
+        return list;            // CR: now returns list rather than NULL
     }
 
     /* Set new node variables */
@@ -89,10 +93,11 @@ list_t *list_add(list_t *list, void *data) {
 
 }
 
+// CR: Checked for missing free(); not found.
 void *list_remove_index(list_t *list, size_t index) {
 
     /* Returns if parameters are not met */
-    if (list == NULL || index > list->size) {
+    if (!list || index > list->size) {      // CR: list == NULL changed to !list
         return NULL;
     }
 
@@ -121,7 +126,7 @@ void *list_remove_index(list_t *list, size_t index) {
 int list_indexof(list_t *list, void *data) {
 
     /* Returns if parameters are not met */
-    if (list == NULL || data == NULL) {
+    if (!list || !data) {       // CR: list == NULL changed to !list, data == NULL changed to !data
         return -1;
     }
 

@@ -256,7 +256,7 @@ void test_indexOf4(void)
 
 void test_addNull(void)
 {
-  TEST_ASSERT_TRUE(list_add(lst_, NULL) == NULL);
+  TEST_ASSERT_TRUE(list_add(lst_, NULL) == lst_);   // CR: accounts for list_add now returning list if data is NULL
   void *data = alloc_data(0);
   TEST_ASSERT_TRUE(list_add(NULL, data) == NULL);
   TEST_ASSERT_TRUE(list_add(NULL, NULL) == NULL);
